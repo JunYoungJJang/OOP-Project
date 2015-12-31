@@ -3,7 +3,6 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-// #include <conio.h>
 
 using std::cout;
 using std::endl;
@@ -16,7 +15,6 @@ typedef struct _Account {
 
 	_Account* link;
 } Account;
-
 
 // 수정할 점: 계좌번호 겹칠 가능성 없게하기
 void make_account(Account** head, Account** tail)
@@ -32,7 +30,7 @@ void make_account(Account** head, Account** tail)
 	new_ac->money = 0;
 	
 	srand(time(NULL));
-	for(int i=0; i<11; i++) {   // 계좌 번호 생성
+	for (int i=0; i<11; i++) {   // 계좌 번호 생성
 		if(i == 5) {
 			new_ac->id[i] = '-';
 			continue;
@@ -43,7 +41,7 @@ void make_account(Account** head, Account** tail)
 	new_ac->id[11] = '\0';
 	new_ac->link = NULL;
 
-	if(*head == NULL) {   // 아무도 없으면
+	if (*head == NULL) {   // 아무도 없으면
 		*head = *tail = new_ac;
 	} else {
 		(*tail)->link = new_ac;
@@ -74,8 +72,8 @@ Account* identify(Account* head)
 
         system("clear");
 
-        while(head) {
-                if(!strcmp(head->name, name) && !strcmp(head->id, id)) {
+        while (head) {
+                if (!strcmp(head->name, name) && !strcmp(head->id, id)) {
                         break;
                 }
 
@@ -90,7 +88,7 @@ void deposit(Account *head)
 	int input;
 
 	head = identify(head);
-	if(head == NULL) {
+	if (head == NULL) {
 		cout << "없는 정보입니다." << endl;
 		sleep(3);
 		system("clear");
@@ -118,7 +116,7 @@ void withdraw(Account *head)
 	int output;
 
 	head = identify(head);
-	if(head == NULL) {
+	if (head == NULL) {
 		cout << "없는 정보입니다." << endl;
 		sleep(3);
 		system("clear");
@@ -132,7 +130,7 @@ void withdraw(Account *head)
 	cin >> output;
 
 	system("clear");
-	if(head->money < output) {
+	if (head->money < output) {
 		cout << "잔액을 확인해 주세요." << endl;
 		cout << "잔    액: " << head->money << endl;
 
@@ -155,14 +153,14 @@ void showAll(Account *head)
 {
 	char id[12];
 
-	if(head == NULL) {
+	if (head == NULL) {
 		cout << "가입한 고객이 없습니다." << endl;
 	}
 
 	cout << "모든 고객의 잔액을 출력합니다." << endl;
 	while(head) {
 		strcpy(id, head->id);
-		for(int i=6; i<11; i++) {   // 계좌 번호 보호
+		for (int i=6; i<11; i++) {   // 계좌 번호 보호
 			id[i] = '*';
 		}
 	
@@ -196,21 +194,20 @@ int main(void)
 
 	head = tail = NULL;
 
-	while(1) {
+	while (1) {
 		menu();
 
 		cin >> sel;
 		system("clear");
-		if(sel < 1 || sel > 5) {
+		if (sel < 1 || sel > 5) {
 			cout << "잘못된 입력입니다!!!" << endl;
 			continue;
-		} else if(sel == 5) {
+		} else if (sel == 5) {
 			cout << "이용해 주셔서 감사합니다." << endl;
 			break;
 		}
 
-		switch(sel)
-		{
+		switch (sel) {
 		case 1:
 			make_account(&head, &tail);
 			break;
