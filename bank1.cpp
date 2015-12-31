@@ -85,7 +85,7 @@ Account* identify(Account* head)
 
 void deposit(Account *head)
 {
-	int input;
+	unsigned int input;
 
 	head = identify(head);
 	if (head == NULL) {
@@ -113,7 +113,7 @@ void deposit(Account *head)
 
 void withdraw(Account *head)
 {
-	int output;
+	unsigned int output;
 
 	head = identify(head);
 	if (head == NULL) {
