@@ -120,22 +120,24 @@ static int Account::identify(Account* arr[])
 	return -1;	
 }
 
-void Account::ShowInfo()
+static void Account::ShowInfo(Account* arr[])
 {
-	char id[12];
-
-	strcpy(id, this->id);
-	for(int i=6; i<11; i++) {
-		id[i] = '*';
+	for(int i=0; arr[i]; i++) {
+		char id[12];
+	
+		strcpy(id, arr[i]->id);
+		for(int j=6; j<11; j++) {
+			id[j] = '*';
+		}
+	
+		cout << "이    름: " << arr[i]->name << endl;
+		cout << "계좌번호: " << id << endl;
+		cout << "잔    액: " << arr[i]->money << endl;
+		cout << endl;
 	}
-
-	cout << "이    름: " << name << endl;
-	cout << "계좌번호: " << id << endl;
-	cout << "잔    액: " << money << endl;
-	cout << endl;
 }
 
-void Account::ShowMenu()
+static Account::ShowMenu()
 {
 	cout << "=== 준영 은행입니다~~~ ===" << endl;
 	cout << "1. 계좌 개설" << endl;
