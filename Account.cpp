@@ -50,18 +50,6 @@ Account::Account(const char* _name)
 	system("clear");		
 }
 
-Account::Account(const Account& temp)
-{
-	money = temp.money;
-	name = new char[strlen(temp.name) + 1];
-	id = new char[strlen(temp.id) + 1];
-	
-	strcpy(name, temp.name);
-	strcpy(id, temp.id);
-	
-	id[0] = id[10] = '0';   // 임시: 똑같은 계좌 생성 방지
-}
-
 Account::~Account()
 {
 	delete []name;
@@ -99,7 +87,7 @@ void Account::Withdraw(unsigned int _money)
 }
 
 // 수정: reference 식 참조
-static int Account::identify(Account* arr[])
+int Account::identify(Account* arr[])
 {
 	int i;
 	char _name[20], _id[12];
@@ -120,24 +108,22 @@ static int Account::identify(Account* arr[])
 	return -1;	
 }
 
-static void Account::ShowInfo(Account* arr[])
+void Account::ShowInfo()
 {
-	for(int i=0; arr[i]; i++) {
-		char id[12];
-	
-		strcpy(id, arr[i]->id);
-		for(int j=6; j<11; j++) {
-			id[j] = '*';
-		}
-	
-		cout << "이    름: " << arr[i]->name << endl;
-		cout << "계좌번호: " << id << endl;
-		cout << "잔    액: " << arr[i]->money << endl;
-		cout << endl;
+	char id[12];
+
+	strcpy(id, this->id);
+	for(int i=6; i<11; i++) {
+		id[i] = '*';
 	}
+
+	cout << "이    름: " << name << endl;
+	cout << "계좌번호: " << id << endl;
+	cout << "잔    액: " << money << endl;
+	cout << endl;
 }
 
-static Account::ShowMenu()
+void Account::ShowMenu()
 {
 	cout << "=== 준영 은행입니다~~~ ===" << endl;
 	cout << "1. 계좌 개설" << endl;
@@ -148,4 +134,3 @@ static Account::ShowMenu()
 
 	cout << "\n입력: ";
 }
-
