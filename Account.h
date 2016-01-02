@@ -14,6 +14,6 @@ public:
 
 	static int identify(Account* arr[]);
 
-	void ShowInfo();
-	void ShowMenu();	
+	static void ShowInfo(Account* arr[]);
+	static void ShowMenu();	
 };
