@@ -1,6 +1,5 @@
 /*
-	Banking System v2.1 by JunYoung
-	수정 사항: 메모리 사용량 줄임.
+	Banking System v2.0 by JunYoung
 */
 
 #include "Account.h"
@@ -13,6 +12,7 @@ using std::cout;
 using std::endl;
 
 const int MAX_PATRON = 30;
+Account temp;
 
 int main(void)
 {
@@ -23,7 +23,7 @@ int main(void)
 		int sel;
 		char name[15];
 
-		Account::ShowMenu();
+		temp.ShowMenu();
 		cin >> sel;
 	
 		system("clear");
@@ -50,7 +50,7 @@ int main(void)
 			break;	
 		
 		case 2:   // 입금
-			index = Account::identify(patrons);
+			index = temp.identify(patrons);
 			if(index == -1) {
 				cout << "\n해당 계정 정보가 존재하지 않습니다." << endl;
 				sleep(3);
@@ -66,7 +66,7 @@ int main(void)
 			break;
 
 		case 3:   // 출금
-			index = Account::identify(patrons);
+			index = temp.identify(patrons);
 			if(index == -1) {
 				cout << "\n해당 계정 정보가 존재하지 않습니다." << endl;
 				sleep(3);
@@ -83,7 +83,9 @@ int main(void)
 
 		case 4:   // 잔액 조회
 			cout << "준영 은행의 고객 정보입니다." << endl;
-			Account::ShowInfo(patrons);
+			for(int i=0; patrons[i]; i++) {
+				patrons[i]->ShowInfo();
+			}
 			break;	
 		}
 	}
@@ -93,4 +95,3 @@ int main(void)
 
 	return 0;
 }
-
