@@ -1,5 +1,6 @@
 /*
-	Banking System v2.0 by JunYoung
+	Banking System v2.1 by JunYoung
+	수정 사항: 메모리 사용량 줄임.
 */
 
 #include "Account.h"
