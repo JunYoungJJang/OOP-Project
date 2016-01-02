@@ -1,7 +1,7 @@
 class Account
 {
-	char* name;
-	char* id;
+	const char* name;
+	const char* id;
 	unsigned int money;
 public:
 	Account();
