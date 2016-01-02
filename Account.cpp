@@ -50,6 +50,18 @@ Account::Account(const char* _name)
 	system("clear");		
 }
 
+Account::Account(const Account& temp)
+{
+	money = temp.money;
+	name = new char[strlen(temp.name) + 1];
+	id = new char[strlen(temp.id) + 1];
+	
+	strcpy(name, temp.name);
+	strcpy(id, temp.id);
+	
+	id[0] = id[10] = '0';   // 임시: 똑같은 계좌 생성 방지
+}
+
 Account::~Account()
 {
 	delete []name;
@@ -87,7 +99,7 @@ void Account::Withdraw(unsigned int _money)
 }
 
 // 수정: reference 식 참조
-int Account::identify(Account* arr[])
+static int Account::identify(Account* arr[])
 {
 	int i;
 	char _name[20], _id[12];
