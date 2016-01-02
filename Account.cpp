@@ -17,6 +17,18 @@ Account::Account() {
 	money = 10000000;
 }
 
+Account::Account(const Account& temp)
+{
+	money = temp.money;
+	name = new char[strlen(temp.name) + 1];
+	id = new char[strlen(temp.id) + 1];
+	
+	strcpy(name, temp.name);
+	strcpy(id, temp.id);
+	
+	id[0] = id[10] = '0';
+}
+
 Account::Account(const char* _name)
 {
 	if(_name == NULL) {
