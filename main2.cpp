@@ -12,7 +12,6 @@ using std::cout;
 using std::endl;
 
 const int MAX_PATRON = 30;
-Account temp;
 
 int main(void)
 {
@@ -23,7 +22,7 @@ int main(void)
 		int sel;
 		char name[15];
 
-		temp.ShowMenu();
+		Account::ShowMenu();
 		cin >> sel;
 	
 		system("clear");
@@ -50,7 +49,7 @@ int main(void)
 			break;	
 		
 		case 2:   // 입금
-			index = temp.identify(patrons);
+			index = Account::identify(patrons);
 			if(index == -1) {
 				cout << "\n해당 계정 정보가 존재하지 않습니다." << endl;
 				sleep(3);
@@ -66,7 +65,7 @@ int main(void)
 			break;
 
 		case 3:   // 출금
-			index = temp.identify(patrons);
+			index = Account::identify(patrons);
 			if(index == -1) {
 				cout << "\n해당 계정 정보가 존재하지 않습니다." << endl;
 				sleep(3);
@@ -83,9 +82,7 @@ int main(void)
 
 		case 4:   // 잔액 조회
 			cout << "준영 은행의 고객 정보입니다." << endl;
-			for(int i=0; patrons[i]; i++) {
-				patrons[i]->ShowInfo();
-			}
+			Account::ShowInfo(patrons);
 			break;	
 		}
 	}
