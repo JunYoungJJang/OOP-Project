@@ -10,7 +10,7 @@ public:
 	Account(const Account& a);
 	~Account();
 	
-	const char* GetName() const;
+	const char* GetName() const; 
 	const char* GetID() const;
 	const char* GetPW() const;
 	unsigned int GetBal() const;
