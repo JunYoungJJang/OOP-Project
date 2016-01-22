@@ -1,19 +1,20 @@
+#include <iostream>
+
 class Account
 {
-	char* name;
-	char* id;
-	unsigned int money;
+private:
+	char *name, *id, *pw;
+	unsigned int balance;
 public:
-	Account();
-	Account(const char* _name);
-	Account(const Account& temp);
+	Account(const char* _name=NULL, const char* _id=NULL, const char* _pw=NULL);
+	Account(const Account& a);
 	~Account();
-
-	void Deposit(unsigned int _money);
-	void Withdraw(unsigned int _money);
-
-	int identify(Account* arr[]);
-
-	void ShowInfo();
-	void ShowMenu();	
+	
+	const char* GetName() const;
+	const char* GetID() const;
+	const char* GetPW() const;
+	unsigned int GetBal() const;
+	
+	void AddMoney(int money);
+	void MinMoney(int money);
 };
