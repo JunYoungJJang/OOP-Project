@@ -1,148 +1,66 @@
-#include "Account.h"
-#include <iostream>
-#include <cstdlib>
 #include <string.h>
+#include <iostream>
+#include "Account.h"
 
-using std::cin;
 using std::cout;
 using std::endl;
 
-Account::Account() {
-	name = new char[6];
-	strcpy(name, "admin");
-	
-	id = new char[12];
-	strcpy(id, "00000-00000");
-	
-	money = 10000000;
-}
-
-Account::Account(const Account& temp)
+Account::Account(const char* _name, const char* _id, const char* _pw)
 {
-	money = temp.money;
-	name = new char[strlen(temp.name) + 1];
-	id = new char[strlen(temp.id) + 1];
-	
-	strcpy(name, temp.name);
-	strcpy(id, temp.id);
-	
-	id[0] = id[10] = '0';
-}
-
-Account::Account(const char* _name)
-{
-	if(_name == NULL) {
-		cout << "이름을 입력해주세요!" << endl;
-		return;
-	} else if(strlen(_name) > 12) {
-		cout << "이름이 너무 길어요..." << endl;
-		return;
-	}
-	money = 0;
-
 	name = new char[strlen(_name) + 1];
 	strcpy(name, _name);
+
+	id = new char[strlen(_id) + 1];
+	strcpy(id, _id);
 	
-	id = new char[12];			
-	for(int i=0; i<11; i++) {
-		if(i == 5) {
-			id[i] = '-';
-			continue;
-		}
-		id[i] = rand()%10 + '0';
-	}
-	id[11] = '\0';
+	pw = new char[strlen(_pw) + 1];
+	strcpy(pw, _pw);
 
-	cout << "계좌가 생성되었습니다." << endl;
-	cout << "이     름: " << name << endl;
-	cout << "계좌번호: " << id << endl;
-	cout << "잔     액: " << money << endl;
-
-	sleep(5);
-	system("clear");		
+	balance = 0;
 }
+Account::Account(const Account& a)
+{
+	name = new char[strlen(a.name) + 1];
+	strcpy(name, a.name);
 
+	id = new char[strlen(a.id) + 1];
+	strcpy(id, a.id);
+
+	pw = new char[strlen(a.pw) + 1];
+	strcpy(pw, a.pw);
+
+	balance = a.balance;
+}   // 오류: 계좌 번호 겹침! 돈 복사?
 Account::~Account()
 {
 	delete []name;
-	delete []id;	
+	delete []id;
+	delete []pw;
 }
 
-void Account::Deposit(unsigned int _money)
+const char* Account::GetName() const
 {
-	money += _money;
-
-	cout << "\n거래가 성공적으로 이루어졌습니다." << endl;
-	cout << "잔    액: " << money << endl;
-
-	sleep(3);
-	system("clear");	
+	return name;
+}
+const char* Account::GetID() const
+{
+	return id;
+}
+const char* Account::GetPW() const
+{
+	return pw;
+}
+unsigned int Account::GetBal() const
+{
+	return balance;
 }
 
-void Account::Withdraw(unsigned int _money)
+void Account::AddMoney(int money)
 {
-	if(_money > money) {
-		cout << "\n잔액을 확인해주세요." << endl;
-		cout << "잔    액: " << money<< endl;
-
-		sleep(3);
-		system("clear");
-	} else {
-		money -= _money;
-		
-		cout << "\n거래가 성공적으로 이루어졌습니다." << endl;
-		cout << "잔    액: " << money << endl;
-	
-		sleep(3);
-		system("clear");
-	}
+	balance += money;
 }
 
-// 수정: reference 식 참조
-int Account::identify(Account* arr[])
+void Account::MinMoney(int money)
 {
-	int i;
-	char _name[20], _id[12];
-
-	cout << "본인 확인을 위해 아래 정보를 입력해주세요." << endl;
-	cout << "이    름: ";	
-	cin >> _name;
-
-	cout << "계좌번호: ";
-	cin >> _id;
-	
-	for(i=0; arr[i]; i++) {
-		if(!strcmp(arr[i]->name, _name) && !strcmp(arr[i]->id, _id)) {
-			return i;
-		}
-	}
-
-	return -1;	
-}
-
-void Account::ShowInfo()
-{
-	char id[12];
-
-	strcpy(id, this->id);
-	for(int i=6; i<11; i++) {
-		id[i] = '*';
-	}
-
-	cout << "이    름: " << name << endl;
-	cout << "계좌번호: " << id << endl;
-	cout << "잔    액: " << money << endl;
-	cout << endl;
-}
-
-void Account::ShowMenu()
-{
-	cout << "=== 준영 은행입니다~~~ ===" << endl;
-	cout << "1. 계좌 개설" << endl;
-	cout << "2. 입금" << endl;
-	cout << "3. 출금" << endl;
-	cout << "4. 전체 고객 잔액 조회" << endl;
-	cout << "5. 종료 " << endl;
-
-	cout << "\n입력: ";
+	balance -= money;
 }
