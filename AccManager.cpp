@@ -49,19 +49,30 @@ void AccManager::makeAccount()
 		id[i] = (rand()%10) + '0';
 	}
 	id[11] = '\0';
-
-	user[cnt++] = new Account(name, id, pw);
-
-	cout << "계좌가 성공적으로 생성되었습니다." << endl<<endl;
-	cout << "이    름: " << user[cnt-1]->GetName() << endl;
-	cout << "계좌번호: " << user[cnt-1]->GetID() << endl;
-	cout << "비밀번호: ";
-	for(int i=0; i<strlen( user[cnt-1]->GetPW() ); i++) {
-		cout << '*';
-	}
 	cout << endl;
-	cout << "잔    액: " << user[cnt-1]->GetBal() << endl<<endl;
+
+	int choice=1;
+	do {
+		if(choice != 1 && choice != 2) {
+			cout << "다시 입력해주세요!!!" << endl<<endl;
+		}
+		cout << "1. 신용 계좌 2. 기부 계좌" << endl;
+		cout << "선택: ";
+		cin >> choice;
+		cout << endl;
+	}while(choice<1 || choice>2);
+
+	if(choice == 1) {
+		user[cnt++] = new CreditAcc(name, id, pw);
+	} else {
+		user[cnt++] = new DonationAcc(name, id, pw);
+	}
+	
+	cout << "계좌가 성공적으로 생성되었습니다." << endl<<endl;
+	user[cnt-1]->ShowAll();
+	cout << endl;
 }
+
 
 void AccManager::inOut(mode sel)
 {
