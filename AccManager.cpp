@@ -9,9 +9,8 @@ using std::endl;
 
 AccManager::~AccManager()
 {
-	for(int i=0; i<cnt; i++) {
-		delete user[i];
-	}
+	// 디폴트 소멸자
+	// 삭제시 Container에서 할당 해제해줌.
 }
 
 void AccManager::makeAccount()
@@ -53,26 +52,27 @@ void AccManager::makeAccount()
 
 	int choice=1;
 	do {
-		if(choice != 1 && choice != 2) {
+		if(choice < 1 || choice > 3) {
 			cout << "다시 입력해주세요!!!" << endl<<endl;
 		}
-		cout << "1. 신용 계좌 2. 기부 계좌" << endl;
+		cout << "1. 일반 계좌 2. 신용 계좌 3. 기부 계좌" << endl;
 		cout << "선택: ";
 		cin >> choice;
 		cout << endl;
-	}while(choice<1 || choice>2);
+	}while(choice<1 || choice>3);
 
 	if(choice == 1) {
-		user[cnt++] = new CreditAcc(name, id, pw);
+		ctr.Insert(new Account(name, id, pw));
+	} else if(choice == 2) {
+		ctr.Insert(new CreditAcc(name, id, pw));
 	} else {
-		user[cnt++] = new DonationAcc(name, id, pw);
+		ctr.Insert(new DonationAcc(name, id, pw));
 	}
 	
 	cout << "계좌가 성공적으로 생성되었습니다." << endl<<endl;
-	user[cnt-1]->ShowAll();
+	ctr.GetItem(ctr.GetElemSum()-1)->ShowAll();
 	cout << endl;
 }
-
 
 void AccManager::inOut(mode sel)
 {
@@ -97,10 +97,10 @@ void AccManager::inOut(mode sel)
 
 	cout << "비밀번호: ";
 	cin >> pw;
-	if(id == NULL || strlen(id) > 20 || strlen(id) < 5) {
+	 if(id == NULL || strlen(id) > 20 || strlen(id) < 5) {
                 cout << "비밀번호는 영어, 숫자 혼합 5자 이상 20자 이하입니다." << endl<<endl;
                 return;
-    }
+        }
 
 	if(sel == DEPOSIT) {
 		cout << "입금하실 금액: ";
@@ -114,21 +114,21 @@ void AccManager::inOut(mode sel)
 	cout << endl;
 
 	Account temp(name, id, pw);
-	for(int i=0; i<cnt; i++) {
-		if(identify(user[i], temp)) {
+	for(int i=0; i<ctr.GetElemSum(); i++) {
+		if(identify(ctr.GetItem(i), temp)) {
 			if(sel == DEPOSIT) {
-				user[i]->AddMoney(money);
+				*(ctr.GetItem(i)) += money;
 			} else {
-				if(user[i]->GetBal() < money) {
+				if(ctr.GetItem(i)->GetBal() < money) {
 					cout << "잔액을 확인해주세요!!" << endl<<endl;
 					return;
 				} else {
-					user[i]->MinMoney(money);
+					*(ctr.GetItem(i)) -= money;
 				}
 			}
-		
+	
 			cout << "정상적으로 처리되었습니다." << endl;
-			cout << "잔액: " << user[i]->GetBal() << endl<<endl;
+			cout << "잔액: " << ctr.GetItem(i)->GetBal() << endl<<endl;
 			return;			
 		}
 	}
@@ -161,14 +161,14 @@ void AccManager::remit()
 
 	cout << "비밀번호: ";
 	cin >> pw;
-	if(id == NULL || strlen(id) > 20 || strlen(id) < 5) {
-        cout << "비밀번호는 영어, 숫자 혼합 5자 이상 20자 이하입니다." << endl<<endl;
-        return;
-    }
+	 if(id == NULL || strlen(id) > 20 || strlen(id) < 5) {
+                cout << "비밀번호는 영어, 숫자 혼합 5자 이상 20자 이하입니다." << endl<<endl;
+                return;
+        }
 
 	Account temp(name, id, pw);
-	for(int i=0; i<cnt; i++) {
-		if(identify(user[i], temp)) {
+	for(int i=0; i<ctr.GetElemSum(); i++) {
+		if(identify(ctr.GetItem(i), temp)) {
 			flag = true;
 			index = i;
 			break;
@@ -192,14 +192,14 @@ void AccManager::remit()
 	cin >> money;
 	cout <<endl;
 
-	for(int i=0; i<cnt; i++) {
-		if(!strcmp(name, user[i]->GetName()) && !strcmp(id, user[i]->GetID()))
+	for(int i=0; i<ctr.GetElemSum(); i++) {
+		if(!strcmp(name, ctr.GetItem(i)->GetName()) && !strcmp(id, ctr.GetItem(i)->GetID()))
 		{
-			if(user[index]->GetBal() < money) {
+			if(ctr.GetItem(index)->GetBal() < money) {
 				cout << "잔액을 확인해주세요!" << endl<<endl;
 			} else {
-				user[i]->AddMoney(money);
-				user[index]->MinMoney(money);
+				*(ctr.GetItem(i)) += money;
+				*(ctr.GetItem(index)) -= money;
 				cout << "정상적으로 처리되었습니다." << endl<<endl;
 			}
 			return;
@@ -212,15 +212,8 @@ void AccManager::remit()
 void AccManager::showAllUsers()
 {
 	cout << endl;
-	for(int i=0; i<cnt; i++) {
-		cout << "이    름: " << user[i]->GetName() << endl;
-    	cout << "계좌번호: " << user[i]->GetID() << endl;
-    	cout << "비밀번호: ";
-    	for(int j=0; j<strlen( user[i]->GetPW() ); j++) {
-        	cout << '*';
-        }
-       	cout << endl;
-        cout << "잔    액: " << user[i]->GetBal() << endl;
+	for(int i=0; i<ctr.GetElemSum(); i++) {
+		ctr.GetItem(i)->ShowAll();
 		cout << endl;
 	}
 }
