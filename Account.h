@@ -1,9 +1,12 @@
+#ifndef _ACCOUNT_H
+#define _ACCOUNT_H
 #include <iostream>
 
 class Account
 {
 private:
 	char *name, *id, *pw;
+protected:
 	unsigned int balance;
 public:
 	Account(const char* _name=NULL, const char* _id=NULL, const char* _pw=NULL);
@@ -15,10 +18,12 @@ public:
 	const char* GetPW() const;
 	unsigned int GetBal() const;
 	
-	virtual void AddMoney(unsigned int money);
-	void MinMoney(unsigned int money);
+	virtual void operator+=(unsigned int money);
+	void operator-=(unsigned int money);
 
 	virtual void ShowAll() const;
+	
+	Account& operator=(const Account& a);
 };
 
 class CreditAcc : public Account
@@ -31,9 +36,11 @@ public:
 	virtual ~CreditAcc();
 	
 	unsigned int GetInterest() const;
-	virtual void AddMoney(unsigned int money);	
+	virtual void operator+=(unsigned int money);	
 
 	virtual void ShowAll() const;
+
+	CreditAcc& operator=(const CreditAcc& c);
 };
 
 class DonationAcc : public Account
@@ -46,8 +53,12 @@ public:
 	virtual ~DonationAcc();
 
 	unsigned int GetDonation() const;
-	virtual void AddMoney(unsigned int money);
+	virtual void operator+=(unsigned int money);
 
 	virtual void ShowAll() const;
+
+	DonationAcc& operator=(const DonationAcc& d);
 };
+
+#endif
 
