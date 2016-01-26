@@ -56,12 +56,12 @@ unsigned int Account::GetBal() const
 	return balance;
 }
 
-void Account::AddMoney(unsigned int money)
+void Account::operator+=(unsigned int money)
 {
 	balance += money;
 }
 
-void Account::MinMoney(unsigned int money)
+void Account::operator-=(unsigned int money)
 {
 	balance -= money;
 }
@@ -76,6 +76,20 @@ void Account::ShowAll() const
 	}
 	cout << endl;
 	cout << "잔    액: " << GetBal() <<endl;
+}
+
+Account& Account::operator=(const Account& a)
+{
+	name = new char[strlen(a.name) + 1];
+	id = new char[strlen(a.id) + 1];
+	pw = new char[strlen(a.pw) + 1];
+	balance = a.balance;
+
+	strcpy(name, a.name);
+	strcpy(id, a.id);
+	strcpy(pw, a.pw);
+	
+	return *this;
 }
 
 /***** CreditAcc class *****/
@@ -101,16 +115,25 @@ unsigned int CreditAcc::GetInterest() const {
 	return interest;
 }
 
-void CreditAcc::AddMoney(unsigned int money) {
+void CreditAcc::operator+=(unsigned int money) {
 	int interest = money*0.01;
 
-	this->Account::AddMoney(money + interest);
+	this->balance += (money + interest);
 	this->interest += interest;
 }
 
 void CreditAcc::ShowAll() const {
 	this->Account::ShowAll();   
 	cout << "이    자: " << GetInterest() << endl;
+}
+
+CreditAcc& CreditAcc::operator=(const CreditAcc& c) {
+	Account& dest = *this;
+	const Account& src = c;
+
+	dest = src;
+
+	return *this;
 }
 
 /***** DonationAcc class *****/
@@ -137,11 +160,11 @@ unsigned int DonationAcc::GetDonation() const
 	return donation;
 }
 
-void DonationAcc::AddMoney(unsigned int money)
+void DonationAcc::operator+=(unsigned int money)
 {
 	int donation = money * 0.01;
 	
-	this->Account::AddMoney(money - donation);
+	this->balance += money - donation;
 	this->donation += donation;
 }
 
@@ -149,4 +172,13 @@ void DonationAcc::ShowAll() const
 {
 	this->Account::ShowAll();
 	cout << "기 부 금: " << GetDonation() << endl;
+}
+
+DonationAcc& DonationAcc::operator=(const DonationAcc& d) {
+	Account& dest = *this;
+	const Account& src = d;
+	
+	dest = src;
+
+	return *this;
 }
