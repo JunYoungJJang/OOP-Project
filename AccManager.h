@@ -1,4 +1,4 @@
-#include "Account.h"
+#include "Container.h"
 
 #define MAX_USER	30
 
@@ -9,8 +9,7 @@ typedef enum {
 class AccManager
 {
 private:
-	Account* user[MAX_USER];
-	static unsigned int cnt;
+	Container ctr;
 public:
 	AccManager() { }
 	~AccManager();
